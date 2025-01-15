@@ -20,10 +20,12 @@ server.on('stream', (stream, headers) => {
         stream.on('end', () => {
             try {
                 // Store data in memory
-                storage[path] = JSON.parse(body); // Assuming JSON data
+                storage[path] = body;
                 stream.respond({ ':status': 200 });
                 stream.end('Data stored successfully');
+                console.log(`stored body`)
             } catch (err) {
+                console.log(`error is {err}`)
                 stream.respond({ ':status': 400 });
                 stream.end('Invalid JSON');
             }
