@@ -8,7 +8,14 @@ const cert = fs.readFileSync(path.join('/certs/mr2/', 'cert.pem'));
 
 // Create a secure HTTP/2 server
 const server = http2.createSecureServer(
-    { key, cert }
+    {
+        key,
+        cert,
+        settings: {
+            maxFrameSize: 9437184,
+            initialWindowSize: 9437184,
+        }
+    }
 );
 
 // In-memory storage
