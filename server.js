@@ -1,7 +1,21 @@
 const http2 = require('http2');
+const fs = require('fs');
+const path = require('path');
 
-// Create an HTTP/2 server
-const server = http2.createServer();
+// Load the key and certificate
+const key = fs.readFileSync(path.join('/certs/mr2/', 'key.pem'));
+const cert = fs.readFileSync(path.join('/certs/mr2/', 'cert.pem'));
+
+// Create a secure HTTP/2 server
+const server = http2.createSecureServer(
+    { key, cert },
+    (req, res) => {
+        const { method, url, headers } = req;
+
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(`Hello! You requested ${url}`);
+    }
+);
 
 // In-memory storage
 const storage = {};
